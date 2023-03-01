@@ -27,7 +27,7 @@ namespace System.Buffers
         {
             _sequence = sequence;
 
-            var position = sequence.Start;
+            SequencePosition position = sequence.Start;
             _currentPositionObject = position.GetObject();
             _currentPositionInteger = position.GetInteger();
             sequence.GetFirstSpan(out _currentSpan, next: out position);
@@ -172,7 +172,7 @@ namespace System.Buffers
                 SequencePosition position = new(_nextPositionObject, _nextPositionInteger);
 
                 ReadOnlyMemory<T> currentMemory;
-                while (_sequence.TryGetBuffer(position, out currentMemory, out var next))
+                while (_sequence.TryGetBuffer(position, out currentMemory, out SequencePosition next))
                 {
                     position = next;
                     // Skip empty segment
@@ -253,7 +253,7 @@ namespace System.Buffers
         private void ResetReader()
         {
             // preserve the length - it can be relatively expensive to calculate on demand
-            var length = _length;
+            long length = _length;
 
             // reset all state
             this = new(_sequence);
@@ -273,7 +273,7 @@ namespace System.Buffers
             {
                 position = new(_nextPositionObject, _nextPositionInteger);
 
-                while (_sequence.TryGetBuffer(position, out var memory, out var next))
+                while (_sequence.TryGetBuffer(position, out ReadOnlyMemory<T> memory, out SequencePosition next))
                 {
                     if (memory.Length > 0)
                     {
@@ -410,7 +410,7 @@ namespace System.Buffers
             int copied = firstSpan.Length;
 
             SequencePosition position = new(_nextPositionObject, _nextPositionInteger);
-            while (_sequence.TryGetBuffer(position, out var nextSegment, out var next))
+            while (_sequence.TryGetBuffer(position, out ReadOnlyMemory<T> nextSegment, out SequencePosition next))
             {
                 position = next;
                 if (nextSegment.Length > 0)
