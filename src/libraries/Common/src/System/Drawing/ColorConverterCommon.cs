@@ -45,8 +45,8 @@ namespace System.Drawing
                     return Color.FromName(colorName);
                 }
                 else if ((text.Length == 7 && text[0] == '#') ||
-                         (text.Length == 8 && (text.StartsWith("0x") || text.StartsWith("0X"))) ||
-                         (text.Length == 8 && (text.StartsWith("&h") || text.StartsWith("&H"))))
+                         (text.Length == 8 && (text.StartsWith("0x", StringComparison.OrdinalIgnoreCase))) ||
+                         (text.Length == 8 && (text.StartsWith("&h", StringComparison.OrdinalIgnoreCase))))
                 {
                     // Note: int.Parse will raise exception if value cannot be converted.
                     return PossibleKnownColor(Color.FromArgb(unchecked((int)(0xFF000000 | (uint)IntFromString(text, culture)))));

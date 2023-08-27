@@ -65,7 +65,7 @@ public class GenerateHeaders {
 
 			// For CLR Hresult's we take the last 4 digits as the resource strings.
 
-			if ( (NumericValue.StartsWith("0x")) || (NumericValue.StartsWith("0X")) ) {
+			if (NumericValue.StartsWith("0x", StringComparison.OrdinalIgnoreCase)) {
 
 			    String HexResult = NumericValue.Substring(2);
 			    int num = int.Parse(HexResult, System.Globalization.NumberStyles.HexNumber);
